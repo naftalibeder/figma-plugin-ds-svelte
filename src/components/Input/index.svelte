@@ -1,8 +1,10 @@
-<script>
-
+<script lang="ts">
     import Icon from './../Icon/index.svelte';
 
     export let id = null;
+    export let type: 'text' | 'number' | 'date' = 'text';
+
+    // text, number, date
     export let value = null;
     export let name = null;
     export let iconText = null;
@@ -13,10 +15,19 @@
     export let invalid = false;
     export let errorMessage = 'Error message';
     export let placeholder = 'Input something here...';
+
+    // number, date
+    export let min: string;
+    export let max: string;
+    export let step: string;
+
     export { className as class };
 
     let className = '';
 
+    function updateType(node) {
+        node.type = type;
+    }
 </script>
 
 {#if iconName || iconText}
@@ -25,7 +36,7 @@
             <Icon {iconName} {iconText} {spin} color="black3"/>
         </div>
         <input 
-            type="input"
+            use:updateType
             on:input
             on:change
             on:keydown
@@ -37,6 +48,9 @@
             {disabled}
             {placeholder}
             {errorMessage}
+            {min}
+            {max}
+            {step}
             class="indent"
             class:borders={borders}
             class:invalid={invalid}
@@ -50,7 +64,7 @@
 {:else}
     <div class="input {className}">
         <input 
-            type="input"
+            use:updateType
             on:input
             on:change
             on:keydown
@@ -62,6 +76,9 @@
             {disabled}
             {placeholder}
             {errorMessage}
+            {min}
+            {max}
+            {step}
             class:borders={borders}
             class:invalid={invalid}
         >
